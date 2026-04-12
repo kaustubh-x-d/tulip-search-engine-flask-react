@@ -26,12 +26,16 @@ def search_duckduckgo(query, page=1):
 
     results = []
 
+    from urllib.parse import unquote
+
     for item in soup.find_all("a", class_="result__a"):
+        raw_link = item["href"].split("uddg=")[-1].split("&rut=")[0]
+
         results.append({
             "title": item.text.strip(),
-            "link": item["href"].split("uddg=")[-1]
+            "link": unquote(raw_link)
         })
-
+    print (results)
     return results
 
 
@@ -43,7 +47,7 @@ def search():
         return jsonify([])
 
     results = search_duckduckgo(query)
-
+    print(jsonify(results))
     return jsonify(results)
 
 
